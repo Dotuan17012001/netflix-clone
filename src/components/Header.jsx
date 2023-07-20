@@ -35,6 +35,6 @@ const Container = styled.div`
         color: white;
         border-radius: 0.2rem;
         font-size: 1.05rem;
-        font-weight: bold;
+        font-weight: bolder;
       }
 `
