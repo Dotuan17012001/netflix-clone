@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import {FaSearch,FaPowerOff} from "react-icons/fa"
 import { useState } from "react";
 import {firebaseAuth} from "../utils/firebase-config"
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 const Navbar = (props) => {
     const {isScrolled} = props;
     const links = [
@@ -13,12 +15,14 @@ const Navbar = (props) => {
         {name:"My List", link:"/mylist"}, 
     ];
 
+    const navigate = useNavigate();
+    onAuthStateChanged(firebaseAuth, (currentUser) => {
+        if (!currentUser) navigate("/login");
+      });
+
     const [showSearch, setShowSearch] = useState(false);
     const [inputHover, setInputHover] = useState(false);
 
-    const signOut = () => {
-
-    }
 
     return ( 
         <Container>
@@ -44,9 +48,10 @@ const Navbar = (props) => {
                 </div>
 
                 <div className="right flex a-center">
-                    <div className={`search ${showSearch?"show-search":""}`}>
-                       <button onFocus={()=>setShowSearch(true)} 
-                       onBlur={ () => {
+                    <div className={`search ${showSearch ? "show-search" : ""}`}>
+                       <button 
+                       onFocus ={()=>setShowSearch(true)} 
+                       onBlur ={() => {
                            if(!inputHover) setShowSearch(false)
                         }}
                         > 
@@ -61,7 +66,9 @@ const Navbar = (props) => {
                         }}
                         />
                     </div>
-                    <button onClick={()=>signOut(firebaseAuth)}>
+                    <button onClick={()=>{
+                        signOut(firebaseAuth)
+                        }}>
                       <FaPowerOff/>
                     </button>
                 </div>
@@ -76,6 +83,7 @@ const Container = styled.div`
     .scrolled{
        background-color: black;
     }
+    
     nav{
         position: sticky;
         top: 0;
