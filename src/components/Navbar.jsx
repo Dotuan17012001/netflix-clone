@@ -38,7 +38,7 @@ const Navbar = (props) => {
                             links.map((item,linkItem) => {
                                 return (
                                     <li key={item.name}>
-                                        <Link to={linkItem.link}>{item.name}</Link>
+                                        <Link to={item.link}>{item.name}</Link>
                                     </li>
                                 );
                             })

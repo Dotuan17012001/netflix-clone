@@ -9,15 +9,16 @@ import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovies, getGenres } from '../store';
+import Slider from '../components/Slider';
 
 export default function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const genresLoaded = useSelector((state)=>state.netflix.genresLoaded)
   const dispatch = useDispatch();
+
   const genres = useSelector((state) => state.netflix.genres);
-
-
+  const movies = useSelector((state) => state.netflix.movies);
   window.onscroll = () =>{
     setIsScrolled(window.scrollY === 0 ? false : true);
     return () => (window.onscroll = null);
@@ -32,7 +33,7 @@ export default function Netflix() {
       if(genresLoaded) dispatch(fetchMovies({genres,type:"all"}))
   },[genresLoaded])
 
-  
+  console.log(movies)
 
   return (
   
@@ -56,6 +57,7 @@ export default function Netflix() {
           </div>
         </div>
       </div>
+      <Slider movies = {movies}/>
     </Container>
 
   )
